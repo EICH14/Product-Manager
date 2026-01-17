@@ -19,7 +19,7 @@ Administrative web application to manage products with local persistence.
 MVC-inspired modular structure.
 
 ## Live Demo
-🔗 https://TU_USUARIO.github.io/product-manager/
+🔗 https://eich14.github.io/Product-Manager/
 
 ## Screenshots
 (agrega imágenes)
@@ -28,3 +28,4 @@ MVC-inspired modular structure.
 - Separation of concerns
 - State management in frontend
 - UI/UX best practices
+
