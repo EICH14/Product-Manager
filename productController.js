@@ -31,6 +31,32 @@ function addProduct(form) {
   form.reset();
 }
 
+export function updateProduct(req, res) {
+  const { id } = req.params;
+  const { name, category, price, stock, status } = req.body;
+
+  const products = getAllProducts();
+  const index = products.findIndex(p => p.id === id);
+
+  if (index === -1) {
+    return res.status(404).json({ message: "Product not found" });
+  }
+
+  products[index] = {
+    ...products[index],
+    name: name ?? products[index].name,
+    category: category ?? products[index].category,
+    price: price ?? products[index].price,
+    stock: stock ?? products[index].stock,
+    status: status ?? products[index].status,
+    updatedAt: new Date().toISOString()
+  };
+
+  saveAllProducts(products);
+  res.json(products[index]);
+}
+
+
 function updateProduct(form) {
   const product = products.find(p => p.id === editingId);
   Object.assign(product, {
@@ -55,11 +81,23 @@ function handleEdit(id) {
   form.stock.value = p.stock;
 }
 
-function handleDelete(id) {
+export function deleteProduct(req, res) {
+  const { id } = req.params;
+
+  const products = getAllProducts();
   const product = products.find(p => p.id === id);
+
+  if (!product) {
+    return res.status(404).json({ message: "Product not found" });
+  }
+
   product.status = "inactive";
-  persist();
+  product.deletedAt = new Date().toISOString();
+
+  saveAllProducts(products);
+  res.json({ message: "Product deleted (soft)" });
 }
+
 
 function persist() {
   saveProducts(products);
